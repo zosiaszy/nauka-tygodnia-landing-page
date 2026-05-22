@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nauka Tygodnia — stwórz swoją bazę wiedzy | sophie dbc</title>
+<meta name="description" content="Darmowy zeszyt 'Nauka Tygodnia' — checklista, narzędzia i szablon. Zapisz się i dostań PDF na maila.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fbf7f0;--cream-2:#f3ead9;--ink:#1f1d1b;--muted:#7a736d;
+    --gold:#c9a227;--gold-dark:#a8861a;--line:#e6ddcd;--white:#ffffff;
+    --blush:#f6d9d2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',-apple-system,system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  /* ===== animowane tło ===== */
+  .bg{position:fixed;inset:0;z-index:-2;background:var(--cream);overflow:hidden}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:drift 20s ease-in-out infinite}
+  .blob.b1{width:460px;height:460px;background:#f3ddae;top:-100px;left:-80px}
+  .blob.b2{width:420px;height:420px;background:var(--blush);bottom:-120px;right:-90px;animation-delay:-7s}
+  .blob.b3{width:340px;height:340px;background:#efe7d3;top:42%;left:52%;animation-delay:-13s}
+  @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-26px) scale(1.1)}66%{transform:translate(-26px,30px) scale(.94)}}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;position:relative}
+
+  /* ===== reveal on scroll ===== */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== top bar ===== */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:24px 0}
+  .brand{font-size:21px;letter-spacing:.5px}
+  .brand .glyph{font-weight:500}
+  .top-links{display:flex;gap:20px;align-items:center}
+  .top-links a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;opacity:.75;transition:opacity .2s,transform .2s}
+  .top-links a:hover{opacity:1;transform:translateY(-1px)}
+
+  /* ===== hero ===== */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;padding:34px 0 40px;position:relative}
+  .float-emoji{position:absolute;font-size:30px;opacity:.55;animation:bob 6.5s ease-in-out infinite;pointer-events:none;user-select:none}
+  .fe1{top:6%;left:46%;animation-delay:0s}
+  .fe2{top:60%;left:40%;font-size:24px;animation-delay:-2.2s}
+  .fe3{top:18%;right:2%;font-size:22px;animation-delay:-4s}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-16px) rotate(6deg)}}
+
+  .eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .eyebrow::before{content:"";width:26px;height:1.5px;background:var(--gold)}
+  .hero h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.2vw,58px);line-height:1.05;font-weight:600;margin-bottom:20px;letter-spacing:-.5px}
+  .hero h1 em{font-style:italic;color:var(--gold-dark)}
+  .lead{font-size:18px;color:#534d47;margin-bottom:14px;max-width:440px}
+  .sub{font-size:15px;color:var(--muted);margin-bottom:28px;max-width:440px}
+
+  /* ===== form card ===== */
+  .card{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 18px 50px rgba(120,90,30,.10);max-width:460px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--blush),var(--gold))}
+  .card h3{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:6px}
+  .card p.note{font-size:13px;color:var(--muted);margin-bottom:18px}
+  form{display:flex;flex-direction:column;gap:12px}
+  input[type=email]{width:100%;padding:15px 16px;border:1.5px solid var(--line);border-radius:13px;font-size:15px;font-family:inherit;background:#fcfaf6;transition:border-color .2s,box-shadow .2s}
+  input[type=email]:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.16)}
+  button{position:relative;background:var(--gold);color:#fff;border:none;border-radius:999px;padding:15px 22px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;overflow:hidden}
+  button:hover{background:var(--gold-dark);transform:translateY(-2px);box-shadow:0 10px 24px rgba(201,162,39,.3)}
+  button:active{transform:translateY(0)}
+  button:disabled{opacity:.6;cursor:default;transform:none}
+  .consent{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.5}
+  .success{display:none;text-align:center;padding:16px 6px;animation:pop .5s cubic-bezier(.2,1.2,.4,1)}
+  @keyframes pop{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
+  .success .check{font-size:44px;margin-bottom:6px;display:inline-block;animation:bob 3s ease-in-out infinite}
+  .success h3{font-family:'Fraunces',serif;font-size:22px;margin-bottom:8px}
+  .success p{font-size:14px;color:var(--muted)}
+  .err{display:none;color:#b3261e;font-size:13px;margin-top:4px}
+
+  /* ===== photo ===== */
+  .photo-col{position:relative}
+  .photo-frame{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(135deg,#f3ead9,#e7d3b0);box-shadow:0 28px 64px rgba(120,90,30,.20);animation:floaty 7s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#b89b5e;text-align:center;padding:24px}
+  .photo-placeholder .big{font-family:'Fraunces',serif;font-size:84px;line-height:1;margin-bottom:10px}
+  .photo-placeholder small{font-size:13px;letter-spacing:.4px}
+  .badge{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);background:var(--white);border:1px solid var(--line);border-radius:999px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;box-shadow:0 12px 28px rgba(0,0,0,.08);animation:floaty 7s ease-in-out infinite;animation-delay:-3.5s}
+  .badge b{color:var(--gold-dark)}
+
+  /* ===== quote ===== */
+  .quote-sec{text-align:center;padding:40px 0 30px}
+  .quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(26px,4vw,40px);line-height:1.3;color:var(--ink);max-width:760px;margin:0 auto;position:relative}
+  .quote .bf{display:block;font-size:30px;font-style:normal;margin-bottom:10px;animation:bob 6s ease-in-out infinite}
+  .quote-line{width:60px;height:1.5px;background:var(--gold);margin:22px auto 0}
+
+  /* ===== wave divider ===== */
+  .wave{display:block;width:100%;height:70px;margin:0;line-height:0}
+  .wave svg{width:100%;height:100%}
+
+  /* ===== inside ===== */
+  .inside{padding:46px 0 60px}
+  .inside h2{font-family:'Fraunces',serif;font-size:30px;font-weight:600;text-align:center;margin-bottom:8px}
+  .inside .sub-c{text-align:center;color:var(--muted);font-size:15px;margin-bottom:40px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .feat{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:24px;transition:transform .25s,box-shadow .25s}
+  .feat:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(120,90,30,.12)}
+  .feat .ico{font-size:30px;margin-bottom:10px;display:inline-block;transition:transform .25s}
+  .feat:hover .ico{transform:scale(1.15) rotate(-6deg)}
+  .feat h4{font-size:15px;font-weight:600;margin-bottom:6px}
+  .feat p{font-size:13px;color:var(--muted)}
+
+  /* ===== socials (infographic cards) ===== */
+  .socials{text-align:center;padding:20px 0 70px}
+  .socials h2{font-family:'Fraunces',serif;font-size:28px;font-weight:600;margin-bottom:6px}
+  .socials .lead-s{color:var(--muted);font-size:15px;margin-bottom:30px}
+  .soc-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:640px;margin:0 auto}
+  .soc-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:20px;padding:28px 20px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+  .soc-card:hover{transform:translateY(-7px);box-shadow:0 20px 40px rgba(0,0,0,.10)}
+  .soc-card .glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:160px;height:160px;border-radius:50%;filter:blur(50px);opacity:.35;transition:opacity .25s}
+  .soc-card:hover .glow{opacity:.6}
+  .soc-card.yt .glow{background:#ff5252}
+  .soc-card.tt .glow{background:#25f4ee}
+  .soc-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+  .soc-card.yt .soc-icon{background:#ff3b30;color:#fff}
+  .soc-card.tt .soc-icon{background:#0f0f0f;color:#fff}
+  .soc-icon svg{width:28px;height:28px}
+  .soc-plat{font-weight:600;font-size:16px;position:relative;z-index:1}
+  .soc-handle{font-size:14px;position:relative;z-index:1}
+  .soc-desc{font-size:12.5px;color:var(--muted);position:relative;z-index:1}
+  .soc-cta{margin-top:6px;font-size:12px;font-weight:600;color:var(--gold-dark);position:relative;z-index:1}
+
+  footer{border-top:1px solid var(--line);padding:34px 0 56px;text-align:center;color:var(--muted);font-size:13px;position:relative}
+  footer .brand{font-size:19px;margin-bottom:8px;color:var(--ink)}
+
+  @media(max-width:820px){
+    .hero{grid-template-columns:1fr;gap:34px;padding:14px 0 30px}
+    .photo-col{order:-1;max-width:330px;margin:0 auto}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .card{margin:0 auto}
+    .lead{max-width:none}
+    .float-emoji{display:none}
+  }
+  @media(max-width:480px){
+    .grid{grid-template-columns:1fr}
+    .soc-cards{grid-template-columns:1fr}
+    .top-links a{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand"><span class="glyph">𝓼𝓸𝓹𝓱𝓲𝓮 𝓭𝓫𝓬</span> 🦋📖</div>
+    <div class="top-links">
+      <a href="https://www.youtube.com/@sophiedbc" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.tiktok.com/@sophiedbc" target="_blank" rel="noopener">TikTok</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="float-emoji fe1">📖</span>
+    <span class="float-emoji fe2">🦋</span>
+    <span class="float-emoji fe3">✨</span>
+
+    <div class="hero-text reveal">
+      <div class="eyebrow">Darmowy zeszyt &middot; Nauka Tygodnia</div>
+      <h1>Nauka tygodnia — stwórz swoją <em>bazę wiedzy</em></h1>
+      <p class="lead">Checklista, lista narzędzi i szablon strony — wszystko, czego potrzebujesz, żeby zacząć uczyć się dla siebie. Bez presji, bez wypalenia. ✨</p>
+      <p class="sub">Zapisz się poniżej, a PDF wpadnie Ci na maila od razu. 🤍</p>
+
+      <div class="card">
+        <div id="formView">
+          <h3>Pobierz darmowy PDF 📓</h3>
+          <p class="note">Wpisz maila — zeszyt wyślę Ci w tej samej chwili. 💌</p>
+          <form id="signupForm">
+            <input type="email" id="email" name="email" placeholder="Twój najlepszy adres e-mail" required autocomplete="email">
+            <button type="submit" id="submitBtn">Wyślij mi zeszyt 🤍</button>
+            <div class="err" id="errMsg">Coś poszło nie tak — spróbuj jeszcze raz.</div>
+            <p class="consent">Zapisując się, zgadzasz się na otrzymywanie newslettera „Nauka Tygodnia". Możesz wypisać się w każdej chwili.</p>
+          </form>
+        </div>
+        <div class="success" id="successView">
+          <div class="check">🤍</div>
+          <h3>Gotowe! Sprawdź skrzynkę.</h3>
+          <p>Zeszyt jest już w drodze na Twojego maila. Jeśli go nie widzisz w ciągu paru minut — zerknij w „Oferty" lub spam.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-col reveal">
+      <div class="photo-frame">
+        <!-- Aby dodać zdjęcie: wrzuć plik o nazwie sophie.jpg do tego samego folderu co ten plik HTML -->
+        <img src="sophie.jpg" alt="sophie dbc" onerror="this.style.display='none';document.getElementById('ph').style.display='flex';">
+        <div class="photo-placeholder" id="ph">
+          <div class="big">S</div>
+          <small>(tu wstaw plik: sophie.jpg)</small>
+        </div>
+      </div>
+      <div class="badge">📓 <b>checklista</b> + narzędzia + szablon</div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-sec reveal">
+    <p class="quote"><span class="bf">🦋</span>the goal is to be disgustingly educated<div class="quote-line"></div></p>
+  </section>
+</div>
+
+<!-- WAVE -->
+<div class="wave" aria-hidden="true">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#f3ead9" fill-opacity="0.6" d="M0,32 C240,72 480,0 720,24 C960,48 1200,72 1440,36 L1440,70 L0,70 Z"></path></svg>
+</div>
+
+<div class="wrap">
+  <!-- WHAT'S INSIDE -->
+  <section class="inside">
+    <h2 class="reveal">Co znajdziesz w środku 📖</h2>
+    <p class="sub-c reveal">7 stron konkretu — żadnego lania wody.</p>
+    <div class="grid">
+      <div class="feat reveal"><div class="ico">✅</div><h4>Checklisty</h4><p>Codzienna i cotygodniowa — do odhaczania.</p></div>
+      <div class="feat reveal"><div class="ico">🛠️</div><h4>Narzędzia</h4><p>Wszystko, czego naprawdę używam: focus, czytanie, AI.</p></div>
+      <div class="feat reveal"><div class="ico">📝</div><h4>Szablon strony</h4><p>Gotowy do wydrukowania i wklejenia do zeszytu.</p></div>
+      <div class="feat reveal"><div class="ico">✉️</div><h4>Newsletter</h4><p>Co tydzień: czego nauczyłam się w tym tygodniu.</p></div>
+    </div>
+  </section>
+
+  <!-- SOCIALS -->
+  <section class="socials">
+    <h2 class="reveal">Zobaczmy się gdzie indziej 🦋</h2>
+    <p class="lead-s reveal">Codzienne pigułki wiedzy i pełne odcinki serii.</p>
+    <div class="soc-cards">
+      <a class="soc-card yt reveal" href="https://www.youtube.com/@sophiedbc" target="_blank" rel="noopener">
+        <span class="glow"></span>
+        <span class="soc-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></span>
+        <span class="soc-plat">YouTube</span>
+        <span class="soc-handle">𝓼𝓸𝓹𝓱𝓲𝓮 𝓭𝓫𝓬</span>
+        <span class="soc-desc">Pełne odcinki „Nauka Tygodnia" 🎬</span>
+        <span class="soc-cta">Subskrybuj →</span>
+      </a>
+      <a class="soc-card tt reveal" href="https://www.tiktok.com/@sophiedbc" target="_blank" rel="noopener">
+        <span class="glow"></span>
+        <span class="soc-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3.3v13.4a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.77.12v-3.4a6 6 0 0 0-.77-.05A6 6 0 1 0 15.7 16V9.3a7.5 7.5 0 0 0 4.3 1.36V7.3a4.3 4.3 0 0 1-3.4-1.5z"/></svg></span>
+        <span class="soc-plat">TikTok</span>
+        <span class="soc-handle">𝓼𝓸𝓹𝓱𝓲𝓮 𝓭𝓫𝓬</span>
+        <span class="soc-desc">Codzienne pigułki wiedzy 📚</span>
+        <span class="soc-cta">Obserwuj →</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="brand"><span>𝓼𝓸𝓹𝓱𝓲𝓮 𝓭𝓫𝓬</span> 🦋📖</div>
+    <p>Nauka Tygodnia &middot; Bądź ciekawa. Zadawaj pytania. Nagradzaj swój proces.</p>
+  </footer>
+</div>
+
+<script>
+  // ====== KONFIGURACJA ======
+  const WEBHOOK_URL = "https://hook.eu1.make.com/2bomeyyqk0js3cgumu6dywsh8yi8tpba"; // wspólny webhook (nie zmieniaj)
+  const FREEBIE_ID = "zeszyt"; // musi zgadzać się z filtrem gałęzi w Make
+  // ===========================
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i%4*0.06)+'s'; io.observe(el); });
+
+  // form -> Make
+  const form = document.getElementById('signupForm');
+  const btn = document.getElementById('submitBtn');
+  const errMsg = document.getElementById('errMsg');
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    if(!email){return;}
+    btn.disabled = true; btn.textContent = 'Wysyłam… 💫'; errMsg.style.display='none';
+    const body = 'email=' + encodeURIComponent(email)
+               + '&freebie=' + encodeURIComponent(FREEBIE_ID)
+               + '&zrodlo=' + encodeURIComponent('Landing: ' + FREEBIE_ID);
+    try{
+      await fetch(WEBHOOK_URL, {method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body});
+      document.getElementById('formView').style.display='none';
+      document.getElementById('successView').style.display='block';
+    }catch(err){
+      btn.disabled=false; btn.textContent='Wyślij mi zeszyt 🤍'; errMsg.style.display='block';
+    }
+  });
+</script>
+</body>
+</html>
